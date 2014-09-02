@@ -1,0 +1,43 @@
+{
+"id":{dede:field.id/},
+"alt":"{dede:field.title/}",
+"0": [
+	{dede:php}
+	global $dsql;
+	$num=0;
+	$style="li";
+    $imgurls = '';
+     $row = $dsql -> getone("Select imgurls From`#@__addonimages` where aid='$aid'"); //
+     $imgurls = $row['imgurls'];
+     preg_match_all("/{dede:img (.*)}(.*){\/dede:img/isU", $imgurls, $wordcount);
+     $count = count($wordcount[2]);
+	
+     if($num > $count || $num == 0)
+	 {
+        $num = $count;
+     }
+    
+    for($i = 0;$i < $num;$i++)
+	{
+        if($style == 'li')
+		{
+           // $imglist .= "<a href=#" . $i . "><img src=". trim($wordcount[2][$i]) . " width=" . $imgwith . " height=" . $imgheight . "></a>";
+		   $imglist = trim($wordcount[2][$i]);
+		   echo '{"id":0,"url":"'.$imglist.'","alt":"图"}';
+		   if( $i !== ($num -1 ) )
+		   {
+			   echo ",";
+		   }
+        }
+    }
+	{/dede:php}
+	
+],
+"1": [
+	{dede:arclist row='6' orderby='click' subday='7'}
+		{"id":[field:id/],"url":"[field:litpic/]","alt":"[field:title/]"}[field:global name="autoindex" runphp="yes"](@me==6)?@me='':@me=',';[/field:global]
+	{/dede:arclist}
+],
+"prev": {dede:prenext get='next2_id'/},
+"next": {dede:prenext get='pre2_id'/}
+}
